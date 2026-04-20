@@ -1,31 +1,32 @@
-using ProductCatalog.Api.Domain.HttpClients;
+using ProductCatalog.Api.Domain.Contracts;
 using ProductCatalog.Api.Domain.Product;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace ProductCatalog.Tests.Stubs
+namespace ProductCatalog.Tests.Stubs;
+
+public class StubShopperHistoryHttpClient : IShopperHistoryHttpClient
 {
-    public class StubShopperHistoryHttpClient : IShopperHistoryHttpClient
+    public List<ShopperHistory> ShopperHistories { get; set; } = [];
+
+    public static StubShopperHistoryHttpClient WithHistory(List<ShopperHistory> shopperHistories)
     {
-        public List<ShopperHistory> ShopperHistories { get; set; }
-
-        public static StubShopperHistoryHttpClient WithHistory(List<ShopperHistory> shopperHistories)
+        return new StubShopperHistoryHttpClient
         {
-            return new StubShopperHistoryHttpClient
-            {
-                ShopperHistories = shopperHistories
-            };
-        }
+            ShopperHistories = shopperHistories
+        };
+    }
 
-        public Task<IEnumerable<ShopperHistory>> GetShopperHistory()
-        {
-            return Task.FromResult(ShopperHistories.AsEnumerable());
-        }
+    public static IShopperHistoryHttpClient WithNoHistory()
+    {
+        return new StubShopperHistoryHttpClient();
+    }
 
-        public static IShopperHistoryHttpClient WithNoHistory()
+    public Task<ApiResponse<List<ShopperHistory>>> GetShopperHistory(CancellationToken cancellationToken)
+    {
+        return Task.FromResult(new ApiResponse<List<ShopperHistory>>
         {
-            return new StubShopperHistoryHttpClient();
-        }
+            IsSuccess = true,
+            StatusCode = 200,
+            Content = ShopperHistories
+        });
     }
 }

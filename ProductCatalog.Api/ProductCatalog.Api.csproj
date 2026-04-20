@@ -1,14 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <LangVersion>default</LangVersion>
-    </PropertyGroup>
-
     <ItemGroup>
-      <PackageReference Include="Flurl.Http" Version="2.4.2" />
-      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <InternalsVisibleTo Include="ProductCatalog.Tests" />
     </ItemGroup>
 
+    <ItemGroup>
+      <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+      <PackageReference Include="Scalar.AspNetCore" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ProductCatalog.Api.Domain\ProductCatalog.Api.Domain.csproj" />
+      <ProjectReference Include="..\ProductCatalog.Api.Services\ProductCatalog.Api.Services.csproj" />
+    </ItemGroup>
 
 </Project>
